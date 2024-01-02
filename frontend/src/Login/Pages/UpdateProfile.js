@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../AuthProvider';
 import axios from 'axios';
+import UnauthorizedPage from "../../UnauthorizedPage"
 
 const UpdateProfile = () => {
-    const userId = localStorage.getItem('userId');
-    const { authToken } = useAuth();
+    const [error, setError] = useState({ status: 200, statusText: '' });
+
+    const { authToken, userId } = useAuth();
+
     const [user, setUser] = useState({
         username: '',
         email: '',
@@ -20,21 +23,26 @@ const UpdateProfile = () => {
                     }
                 });
 
-                const data = response.data;
-                // console.log(response);
+                // const data = response.data;
+                // console.log("RES:  ", response);
                 // console.log(data.user)
 
-                if (response) {
-                    setUser(data.user);
+                if (response.status === 200) {
+                    setUser(response.data.user);
+                } else {
+
+                    setError({ status: response.status, statusText: response.statusText })
+
                 }
             } catch (e) {
                 console.error("Error during getting single user:", e.response);
+                setError({ status: e.status, statusText: e.statusText })
             }
 
 
         }
         getUserData();
-    }, [authToken, userId]);
+    }, [authToken, error, userId]);
 
     // { user && console.log(user) }
     // make changes in there then call update
@@ -90,55 +98,63 @@ const UpdateProfile = () => {
     };
 
     return (
-        <div>
-            <h2>UpdateProfile</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Username:
-                    <input
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        placeholder={user && user.username}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
+        <>
+            {error && error.status === 200 ? (
+                <div>
 
+                    <h2>Update Profile</h2>
+                    <form onSubmit={handleSubmit}>
+                        <label>
+                            Username:
+                            <input
+                                type="text"
+                                name="username"
+                                value={formData.username}
+                                placeholder={user && user.username}
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+                        <br />
 
-                <label>
-                    Email:
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        placeholder={user ? user.email : ''}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
+                        <label>
+                            Email:
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                placeholder={user ? user.email : ''}
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+                        <br />
 
+                        <label>
+                            Profile Image:
+                            <input
+                                type="file"
+                                name="profileImage"
+                                onChange={handleChange}
+                                accept="image/*" // Restrict file types to images
+                            />
+                            <img
+                                src={user && user.imageUrl ? `http://localhost:3001${user.imageUrl}` : ''}
+                                alt="user"
+                                style={{ height: "30px", width: "30px" }}
+                            />
+                        </label>
+                        <br />
 
-
-                <label>
-                    Profile Image:
-                    <input
-                        type="file"
-                        name="profileImage"
-                        onChange={handleChange}
-                        accept="image/*" // Restrict file types to images
-                    />
-                    // {user && console.log(`http://localhost:3001${user.imageUrl}`)}
-                    <img src={user ? `http://localhost:3001${user.imageUrl}` : ''} alt="user" style={{ height: "30px", width: "30px" }} />
-                </label >
-                <br />
-
-                <button type="submit">UpdateProfile</button>
-            </form >
-        </div >
+                        <button type="submit">Update Profile</button>
+                    </form>
+                </div>
+            ) : (
+                <UnauthorizedPage />
+            )}
+        </>
     );
+
 };
 
 export default UpdateProfile;

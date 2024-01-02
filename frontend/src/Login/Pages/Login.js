@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../AuthProvider";
+import Navbar from "../Components/Navbar/Navbar";
 
 const Login = () => {
   const { authToken, login, logout } = useAuth();
@@ -13,7 +14,7 @@ const Login = () => {
       [name]: value,
     }));
   };
-  console.log(localStorage.getItem('userId'))
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(logInData);
@@ -28,10 +29,10 @@ const Login = () => {
       const token = response.data.token;
 
       // Store the token using the context
-      login(token);
-      console.log(response);
-      console.log(data.user._id);
-      localStorage.setItem('userId', data.user._id);
+      login(token, data.user._id);
+      // console.log(response);
+      // console.log(data.user._id);
+      // localStorage.setItem('userId', data.user._id);
 
       if (response.ok) {
         setLogInStatus(true);
@@ -42,7 +43,7 @@ const Login = () => {
     }
   };
   return (
-    <div>
+    <><Navbar /><div>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -63,6 +64,9 @@ const Login = () => {
 
       <h2>{logInStatus}</h2>
     </div>
+
+    </>
+
   );
 };
 

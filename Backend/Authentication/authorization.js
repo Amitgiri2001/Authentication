@@ -8,6 +8,7 @@ function protected(req, res, next) {
         try {
             const decoded = verifyToken(token);
             req.user = decoded;
+            console.log("Decoded: ", decoded, req.user);
             // console.log(decoded);
             next();
         } catch (error) {

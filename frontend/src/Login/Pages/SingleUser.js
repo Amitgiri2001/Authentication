@@ -5,10 +5,13 @@ import { useAuth } from '../../AuthProvider';
 import axios from 'axios';
 import styles from './SingleUser.module.css';
 import { Link } from 'react-router-dom';
+import UnauthorizedPage from '../../UnauthorizedPage';
+import Navbar from '../Components/Navbar/Navbar';
 
 const SingleUser = () => {
-    const userId = localStorage.getItem('userId');
-    const { authToken } = useAuth();
+    const [error, setError] = useState({ status: 200, statusText: '' });
+
+    const { authToken, userId } = useAuth();
     const [user, setUser] = useState();
 
     useEffect(() => {
@@ -21,14 +24,15 @@ const SingleUser = () => {
                 });
 
                 const data = response.data;
-                console.log(response);
-                console.log(data.user);
+                // console.log(response);
+                // console.log(data.user);
 
                 if (response) {
                     setUser(data.user);
                 }
             } catch (e) {
-                console.error("Error during getting single user:", e.response);
+                setError({ status: e.response.status, statusText: e.response.statusText })
+                console.error("Error during getti   ng single user:", e.response);
             }
         }
 
@@ -36,22 +40,28 @@ const SingleUser = () => {
     }, [authToken, userId]);
 
     return (
-        <div className={styles.singleUserContainer}>
-            {user && (
-                <>
-                    {user.imageUrl && (
-                        <img className={styles.userImage} src={`http://localhost:3001${user.imageUrl}`} alt="User" />
-                    )}
-                    <div className={styles.userData}>
-                        <div className={styles.username}>User Name: {user.username}</div>
-                        <div className={styles.email}>Email:{user.email}</div>
-                        <Link to="update"><button>Update Profile</button></Link>
-                        <Link to="delete"><button>Delete Profile</button></Link>
-                        {/* Add more user data fields as needed */}
-                    </div>
-                </>
-            )}
-        </div>
+        <>
+            <Navbar />
+            {/* {console.log(authToken)} */}
+            {(error.status === 401 || error.status === 404 || error.status === 500) ? <UnauthorizedPage /> : <div className={styles.singleUserContainer}>
+                {user && (
+                    <>
+                        {user.imageUrl && (
+                            <img className={styles.userImage} src={`http://localhost:3001${user.imageUrl}`} alt="User" />
+                        )}
+                        <div className={styles.userData}>
+                            <div className={styles.username}>User Name: {user.username}</div>
+                            <div className={styles.email}>Email:{user.email}</div>
+                            <Link to="update"><button>Update Profile</button></Link>
+                            <Link to="delete"><button>Delete Profile</button></Link>
+                            {/* Add more user data fields as needed */}
+                        </div>
+                    </>
+                )}
+            </div>}
+
+
+        </>
     );
 };
 

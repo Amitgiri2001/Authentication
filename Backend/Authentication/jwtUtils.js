@@ -10,7 +10,7 @@ const generateToken = (payload) => {
 const verifyToken = (token) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // console.log(decoded)
+        console.log(decoded)
         return decoded;
     } catch (error) {
         throw new Error('Invalid token');

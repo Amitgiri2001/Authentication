@@ -7,8 +7,8 @@ import { useAuth } from '../../../AuthProvider';
 import axios from 'axios';
 
 const Navbar = () => {
-    const userId = localStorage.getItem('userId');
-    const { authToken } = useAuth();
+
+    const { authToken, userId } = useAuth();
     const [user, setUser] = useState();
 
     useEffect(() => {
@@ -21,8 +21,8 @@ const Navbar = () => {
                 });
 
                 const data = response.data;
-                console.log(response);
-                console.log(data.user);
+                // console.log(response);
+                // console.log(data.user);
 
                 if (response) {
                     setUser(data.user);
@@ -35,8 +35,8 @@ const Navbar = () => {
         getUserData();
     }, [authToken, userId]);
     const { logout } = useAuth();
-    const token = localStorage.getItem('token');
-    const [isLoggedIn, setLoggedIn] = useState(token ? true : false);
+
+    const [isLoggedIn, setLoggedIn] = useState(authToken ? true : false);
 
     const handleLogin = () => {
         // Implement your login logic here

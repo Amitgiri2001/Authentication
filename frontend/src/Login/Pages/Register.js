@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Navbar from '../Components/Navbar/Navbar';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -57,72 +58,76 @@ const Register = () => {
     };
 
     return (
-        <div>
-            <h2>Register</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Username:
-                    <input
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
+        <>
+            <Navbar />
+
+            <div>
+                <h2>Register</h2>
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        Username:
+                        <input
+                            type="text"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <br />
 
 
-                <label>
-                    Email:
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
+                    <label>
+                        Email:
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <br />
 
-                <label>
-                    Password:
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
+                    <label>
+                        Password:
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <br />
 
-                <label>
-                    Confirm Password:
-                    <input
-                        type="password"
-                        name="confirmedPassword"
-                        value={formData.confirmedPassword}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
+                    <label>
+                        Confirm Password:
+                        <input
+                            type="password"
+                            name="confirmedPassword"
+                            value={formData.confirmedPassword}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <br />
 
-                <label>
-                    Profile Image:
-                    <input
-                        type="file"
-                        name="profileImage"
-                        onChange={handleChange}
-                        accept="image/*" // Restrict file types to images
-                    />
-                </label>
-                <br />
+                    <label>
+                        Profile Image:
+                        <input
+                            type="file"
+                            name="profileImage"
+                            onChange={handleChange}
+                            accept="image/*" // Restrict file types to images
+                        />
+                    </label>
+                    <br />
 
-                <button type="submit">Register</button>
-            </form>
-        </div>
+                    <button type="submit">Register</button>
+                </form>
+            </div></>
+
     );
 };
 

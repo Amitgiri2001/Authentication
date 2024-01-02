@@ -2,8 +2,8 @@ import React from 'react'
 import axios from 'axios';
 import { useAuth } from "../../AuthProvider"
 const Delete = () => {
-    const userId = localStorage.getItem('userId');
-    const { authToken, logout } = useAuth();
+
+    const { authToken, logout, userId } = useAuth();
     const handleClick = async () => {
 
 

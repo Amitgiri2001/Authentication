@@ -3,6 +3,9 @@ const router = express.Router();
 //use multer for upload images
 const upload = require("../multerConfig")
 
+// verify token
+const { verifyToken } = require("../Authentication/jwtUtils")
+
 // functions
 const { getUserData, updateUserData, deleteUserData } = require("./user")
 
